@@ -8,7 +8,10 @@ const KIT = path.join(__dirname, '..', 'kit'), SFX = path.join(__dirname, '..', 
 const sh = (args) => cp.execFileSync('ffmpeg', ['-nostdin', '-y', '-loglevel', 'error', ...args], { stdio: ['ignore', 'pipe', 'pipe'] })
 
 function armar(cuerpo) {
-  const html = fs.readFileSync(path.join(KIT, 'plantilla.html'), 'utf8').replace('/*CUERPO*/', fs.readFileSync(cuerpo, 'utf8'))
+  // Dibujos aportados por otros (kit/aportes/*.js) se cargan antes del cuerpo.
+  const ap = path.join(KIT, 'aportes'), aportes = fs.existsSync(ap) ? fs.readdirSync(ap).filter((f) => f.endsWith('.js')).sort() : []
+  const tags = aportes.map((f) => `    <script src="aportes/${f}"></script>\n`).join('')
+  const html = fs.readFileSync(path.join(KIT, 'plantilla.html'), 'utf8').replace('    <script>\n', tags + '    <script>\n').replace('/*CUERPO*/', fs.readFileSync(cuerpo, 'utf8'))
   const out = path.join(KIT, path.basename(cuerpo, '.js') + '.html')
   fs.writeFileSync(out, html)
   return out
