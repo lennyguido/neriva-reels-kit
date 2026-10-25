@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @font-face {
+        font-family: Archivo;
+        src: url('archivo.ttf');
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        font-family: Archivo;
+        color: #fff;
+        position: relative;
+      }
+      #bg {
+        position: absolute;
+        inset: 0;
+      }
+      #stage {
+        position: absolute;
+        inset: 0;
+        transform-origin: 540px 960px;
+      }
+      .it {
+        position: absolute;
+        transform-origin: 50% 50%;
+        will-change: transform;
+      }
+      #cap {
+        position: absolute;
+        left: 60px;
+        right: 60px;
+        top: 300px;
+        text-align: center;
+        font-stretch: 115%;
+        font-weight: 800;
+        font-size: 84px;
+        line-height: 1.12;
+        letter-spacing: -0.01em;
+        z-index: 50;
+        text-shadow: 0 6px 24px rgba(0, 0, 0, 0.55);
+      }
+      #cap .hi {
+        background: #ffc93c;
+        color: #16181d;
+        padding: 0 18px;
+        border-radius: 14px;
+        text-shadow: none;
+      }
+      .brand {
+        position: absolute;
+        top: 110px;
+        left: 80px;
+        font-stretch: 125%;
+        font-weight: 800;
+        font-size: 36px;
+        letter-spacing: 0.03em;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        z-index: 60;
+      }
+      .brand i {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #4a74f2;
+        display: inline-block;
+      }
+      .big {
+        font-stretch: 125%;
+        font-weight: 900;
+        letter-spacing: -0.03em;
+        line-height: 1;
+        text-align: center;
+        color: #fff;
+      }
+      .bar {
+        width: 220px;
+        border-radius: 30px 30px 0 0;
+        position: absolute;
+        bottom: 0;
+      }
+      #prog {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        border-radius: 40px;
+        background: linear-gradient(90deg, #4a74f2, #ffc93c);
+      }
+      #cap { top: 1330px; text-shadow: none; text-transform: uppercase; font-size: 66px; font-stretch: 105%; font-weight: 900; }
+      #cap .box { display: inline-block; background: #16181d; padding: 10px 34px 14px; border-radius: 16px; }
+      #cap .box span { transform: none !important; }
+    </style>
+  </head>
+  <body>
+    <div id="bg"><div id="spot"></div></div>
+    <div id="stage"></div>
+    <div class="brand"><i></i>NERIVA</div>
+    <div id="cap"></div>
+    <script src="assets.js"></script>
+    <script src="engine.js"></script>
+    <script src="extra.js"></script>
+    <script>
+      const END = (t0) => ({
+        html: `<div style="width:1080px;height:1920px;background:#1F4FD6;display:flex;flex-direction:column;justify-content:center;padding:0 90px"><div class="big" style="text-align:left;font-size:150px">NERIVA<br>CARTA</div><div class="big" style="text-align:left;font-size:76px;margin-top:40px">La carta que hace de todo.</div><div style="font-size:46px;margin-top:50px;font-weight:700;color:#dfe7ff">30 días gratis ✦ carta.neriva.net</div></div>`,
+        x: 0, y: 0, w: 1080, t: [t0, t0 + 3.5], in: 'blur', idle: 'none', z: 40,
+      })
+      const txt = (s, size, color = '#fff') =>
+        `<div class="big" style="font-size:${size}px;color:${color};white-space:nowrap;text-shadow:0 6px 24px rgba(0,0,0,.5)">${s}</div>`
+      function boxHooks(t, linkAt, panelAt) {
+        if (CAP.textContent.trim()) CAP.innerHTML = `<span class="box">${CAP.innerHTML}</span>`
+        const sl = document.getElementById('scanline')
+        if (sl) sl.setAttribute('y', 600 + ((t * 700) % 700))
+        const lb = document.getElementById('linkbar')
+        if (lb) lb.style.width = 100 * E.ease((t - linkAt) / 0.9) + '%'
+        const pn = ITEMS.find((i) => i.id === 'panel')
+        if (pn && pn.el) {
+          const on = t < panelAt + 1.3 ? ['pSal', 'pCaja', 'pRes'] : []
+          ;['pSal', 'pCaja', 'pRes', 'pMet'].forEach((id) => {
+            const g = pn.el.querySelector('#' + id + ' rect')
+            if (g) g.setAttribute('stroke', on.includes(id) ? C.yellow : 'none'), g.setAttribute('stroke-width', 8)
+          })
+        }
+      }
+/*CUERPO*/
+    </script>
+  </body>
+</html>
